@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "WorkFlowGenerator": {
+      "commandName": "Project",
+      "workingDirectory": "F:\\dev\\WorkFlowGenerator\\WorkFlowGenerator"
+    }
+  }
+}
