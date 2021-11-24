@@ -1,39 +1,62 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFrameworks>netcoreapp3.1;net5.0;net6.0</TargetFrameworks>
-    <PackAsTool>true</PackAsTool>
-    <ToolCommandName>workflow-generator</ToolCommandName>
-    <AssemblyName>workflow-generator</AssemblyName>
-    <PackageOutputPath>./nupkg</PackageOutputPath>
-  </PropertyGroup>
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+		<TargetFrameworks>net6.0</TargetFrameworks>
+		<PackAsTool>true</PackAsTool>
+		<ToolCommandName>workflow-generator</ToolCommandName>
+		<AssemblyName>workflow-generator</AssemblyName>
+		<PackageOutputPath>./nupkg</PackageOutputPath>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <None Remove="templates\base.txt" />
-  </ItemGroup>
+	<ItemGroup>
+		<None Remove="appsettings.Development.json" />
+		<None Remove="appsettings.json" />
+		<None Remove="templates\function.txt" />
+		<None Remove="templates\webapp.txt" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <Content Include="templates\base.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
+	<ItemGroup>
+		<Content Include="appsettings.Development.json">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Include="appsettings.json">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Include="templates\function.txt">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Include="templates\webapp.txt">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
 
+	<ItemGroup>
+		<EmbeddedResource Include="templates\webapp.txt" />
+		<EmbeddedResource Include="templates\function.txt" />
+	</ItemGroup>
 
-
-  <ItemGroup>
-    <Content Remove="templates/base.txt" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Include="templates/base.txt" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="McMaster.Extensions.CommandLineUtils" Version="3.1.0" />
-    <PackageReference Include="Microsoft.Extensions.CommandLineUtils" Version="1.1.1" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
-    <PackageReference Include="System.IO.Abstractions" Version="13.2.47" />
-  </ItemGroup>
+	<ItemGroup>
+		<FrameworkReference Include="Microsoft.AspNetCore.App" />
+		<PackageReference Include="Azure.Identity" Version="1.5.0" />
+		<PackageReference Include="Azure.ResourceManager" Version="1.0.0-beta.5" />
+		<PackageReference Include="GitHubJwt" Version="0.0.5" />
+		<PackageReference Include="IdentityModel.OidcClient" Version="5.0.0-preview.2" />
+		<PackageReference Include="LibGit2Sharp" Version="0.26.2" />
+		<PackageReference Include="McMaster.Extensions.CommandLineUtils" Version="3.1.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Hosting" Version="2.2.7" />
+		<PackageReference Include="Microsoft.Azure.AppService" Version="0.2.2-alpha" />
+		<PackageReference Include="Microsoft.Azure.Management.AppService.Fluent" Version="1.38.0" />
+		<PackageReference Include="Microsoft.Azure.Management.Fluent" Version="1.38.0" />
+		<PackageReference Include="Microsoft.Azure.Management.Websites" Version="3.1.2" />
+		<PackageReference Include="Microsoft.Extensions.CommandLineUtils" Version="1.1.1" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.0" />
+		<PackageReference Include="Octokit" Version="0.50.0" />
+		<PackageReference Include="Sodium.Core" Version="1.2.3" />
+		<PackageReference Include="Spectre.Console" Version="0.42.0" />
+		<PackageReference Include="System.IO.Abstractions" Version="13.2.47" />
+		<PackageReference Include="System.Net.Http.Json" Version="6.0.0" />
+	</ItemGroup>
 
 </Project>
