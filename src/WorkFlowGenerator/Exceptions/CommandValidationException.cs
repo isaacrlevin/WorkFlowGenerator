@@ -2,18 +2,17 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace WorkFlowGenerator.Exceptions
-{
-    public class CommandValidationException : Exception
-    {
-        public CommandValidationException(string message)
-            : base(message)
-        {
-        }
+namespace WorkFlowGenerator.Exceptions;
 
-        public CommandValidationException(string message, Exception innerException)
-            : base(message, innerException)
-        {
-        }
+public class CommandValidationException : Exception
+{
+    public CommandValidationException(string message)
+        : base(message)
+    {
+    }
+
+    public CommandValidationException(string message, Exception innerException)
+        : base(message, innerException)
+    {
     }
 }
