@@ -55,6 +55,8 @@ namespace WorkFlowGenerator.Models
 
         private string targetFrameworkField;
 
+        private string targetFrameworksField;
+
         private string azureFunctionsVersionField;
 
         /// <remarks/>
@@ -67,6 +69,18 @@ namespace WorkFlowGenerator.Models
             set
             {
                 this.targetFrameworkField = value;
+            }
+        }
+
+        public string TargetFrameworks
+        {
+            get
+            {
+                return this.targetFrameworksField;
+            }
+            set
+            {
+                this.targetFrameworksField = value;
             }
         }
 

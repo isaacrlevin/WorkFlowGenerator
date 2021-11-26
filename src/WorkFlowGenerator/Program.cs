@@ -179,7 +179,7 @@ namespace WorkFlowGenerator
                 }
             }
 
-            console.WriteLine($"GitHub Workflow Created at {WorkflowSettings.WorkflowFolderPath}");
+            AnsiConsole.Write($"GitHub Workflow Created at {WorkflowSettings.WorkflowFolderPath}");
             return 0;
 
         }
@@ -191,7 +191,8 @@ namespace WorkFlowGenerator
                 Path = _fileSystem.Directory.GetCurrentDirectory();
 
             // Get all the projects
-            Console.Write("Discovering project...");
+
+            AnsiConsole.WriteLine("Discovering project..");
 
             var projectPath = _projectDiscoveryService.DiscoverProject(Path);
 
@@ -202,13 +203,13 @@ namespace WorkFlowGenerator
                 projectProperties = (WorkFlowGenerator.Models.Project)ser.Deserialize(reader);
             }
 
-            if (!string.IsNullOrEmpty(projectProperties.PropertyGroup.TargetFramework))
+            if (!string.IsNullOrEmpty(projectProperties.PropertyGroup.TargetFrameworks))
             {
-                string[] frameworks = projectProperties.PropertyGroup.TargetFramework.Split(";");
+                string[] frameworks = projectProperties.PropertyGroup.TargetFrameworks.Split(";");
 
                 if (frameworks.Length > 1)
                 {
-                    WorkflowSettings.DOTNETVersion = frameworks[frameworks.Length-1].Replace("net", "") + ".x";
+                    WorkflowSettings.DOTNETVersion = frameworks[frameworks.Length - 1].Replace("net", "") + ".x";
                 }
                 else if (frameworks.Length == 1)
                 {
@@ -218,6 +219,11 @@ namespace WorkFlowGenerator
                 {
                     throw new Exception();
                 }
+            }
+
+            if (!string.IsNullOrEmpty(projectProperties.PropertyGroup.TargetFramework))
+            {
+                WorkflowSettings.DOTNETVersion = projectProperties.PropertyGroup.TargetFramework.Replace("net", "") + ".x";
             }
 
             if (!string.IsNullOrEmpty(projectProperties.PropertyGroup.AzureFunctionsVersion))
