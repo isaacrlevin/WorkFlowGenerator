@@ -23,7 +23,7 @@ After you have the tool installed, you can run it from a inside a directory with
 ```cmd
 REM Run tool from inside folder
 cd C:\dev\somefolderwithaprojectfile
-dotnet-workflow-generate
+dotnet-workflow-generator
 
 REM Pass path into tool
 dotnet-workflow-generator C:\dev\somefolderwithaprojectfile
@@ -67,7 +67,7 @@ You can also run the app from Visual Studio/VS Code/.NET CLI with the following 
 ```
 dotnet run C:\dev\somefolderwithaprojectfileinit
 ```
-## Contributring
+## Contributing
 
 I would love folks to contribute to this idea. Currently I see 2 main forms of contribution that can take place and below are the steps folks can take
 
