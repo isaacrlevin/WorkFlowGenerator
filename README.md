@@ -1,6 +1,6 @@
 # WorkFlowGenerator
 
-A .NET global tool to generate workflows for GitHub Actions based on project configuration and user inputs. The tool is published to Nuget as well
+A .NET global tool to generate workflows for GitHub Actions based on project configuration and user inputs. The tool is published to NuGet as well
 
 https://www.nuget.org/packages/dotnet-workflow-generator/
 
@@ -23,7 +23,7 @@ After you have the tool installed, you can run it from a inside a directory with
 ```cmd
 REM Run tool from inside folder
 cd C:\dev\somefolderwithaprojectfile
-dotnet-workflow-generate
+dotnet-workflow-generator
 
 REM Pass path into tool
 dotnet-workflow-generator C:\dev\somefolderwithaprojectfile
@@ -62,12 +62,12 @@ dotnet tool update -g --add-source .\nupkg dotnet-workflow-generator
 
 You can also run the app from Visual Studio/VS Code/.NET CLI with the following command from the folder with WorkflowGenerator.csproj inside it
 
-**NOTE: You will need to set a path of the .csproj you want to geneate an workflow for using Debug Profiles in VS or passing the path into the command line**
+**NOTE: You will need to set a path of the .csproj you want to generate an workflow for using Debug Profiles in VS or passing the path into the command line**
 
 ```
 dotnet run C:\dev\somefolderwithaprojectfileinit
 ```
-## Contributring
+## Contributing
 
 I would love folks to contribute to this idea. Currently I see 2 main forms of contribution that can take place and below are the steps folks can take
 
