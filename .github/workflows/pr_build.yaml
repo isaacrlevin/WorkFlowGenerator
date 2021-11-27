@@ -38,9 +38,12 @@ jobs:
 
     - name: Restore
       run: dotnet restore
+      working-directory: src
 
     - name: Build
       run: dotnet build --configuration Release --no-restore
+      working-directory: src
 
     - name: Test
       run: dotnet test
+      working-directory: src

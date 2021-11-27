@@ -4,9 +4,17 @@
 		<OutputType>Exe</OutputType>
 		<TargetFrameworks>net6.0</TargetFrameworks>
 		<PackAsTool>true</PackAsTool>
-		<ToolCommandName>workflow-generator</ToolCommandName>
+		<ToolCommandName>workflow</ToolCommandName>
 		<AssemblyName>workflow-generator</AssemblyName>
 		<PackageOutputPath>./nupkg</PackageOutputPath>
+		<Version>0.1.0-pre</Version>
+		<Description>A global tool for generating GitHub Actions workflow files from a .NET project</Description>
+		<Copyright></Copyright>
+		<PackageProjectUrl>https://github.com/isaacrlevin/WorkFlowGenerator</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/isaacrlevin/WorkFlowGenerator</RepositoryUrl>
+		<RepositoryType>git</RepositoryType>
+		<PackageTags>github;actions;workflow</PackageTags>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 	</PropertyGroup>
 
 	<ItemGroup>
