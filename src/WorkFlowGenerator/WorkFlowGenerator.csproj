@@ -21,6 +21,7 @@
     <PackageTags>dotnet github workflow actions generate</PackageTags>
     <RepositoryUrl>https://github.com/isaacrlevin/WorkFlowGenerator.git</RepositoryUrl>
     <Version>0.1.0</Version>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
 
   <ItemGroup>
@@ -49,6 +50,10 @@
 
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    <None Include="..\..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
     <PackageReference Include="Azure.Identity" Version="1.5.0" />
     <PackageReference Include="Azure.ResourceManager" Version="1.0.0-beta.5" />
     <PackageReference Include="GitHubJwt" Version="0.0.5" />
