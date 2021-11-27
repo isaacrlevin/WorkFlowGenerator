@@ -1,54 +1,53 @@
-﻿using LibGit2Sharp;
+﻿using System;
+using LibGit2Sharp;
 using LibGit2Sharp.Handlers;
-using System;
 using WorkFlowGenerator.Models.GitHub;
 
-namespace WorkFlowGenerator.Services
+namespace WorkFlowGenerator.Services;
+
+public class RepoService : IRepoService
 {
-    public class RepoService : IRepoService
+    public RepositoryExtended GetGitRepo(string path)
     {
-        public RepositoryExtended GetGitRepo(string path)
+        var repo = new Repository(Repository.Discover(path));
+        var url = new Uri(repo.Config.Get<string>("remote.origin.url").Value);
+        var repoExtended = new RepositoryExtended
         {
-            var repo = new Repository(Repository.Discover(path));
-            var url = new Uri(repo.Config.Get<string>("remote.origin.url").Value);
-            var repoExtended = new RepositoryExtended
-            {
-                Repository = repo,
-                RemoteOriginUrl = url,
-                GitHubOwner = url.Segments[url.Segments.Length - 2].Replace("/",""),
-                GitHubRepo = url.Segments[url.Segments.Length - 1].Replace("/", "")
-            };
+            Repository = repo,
+            RemoteOriginUrl = url,
+            GitHubOwner = url.Segments[url.Segments.Length - 2].Replace("/", ""),
+            GitHubRepo = url.Segments[url.Segments.Length - 1].Replace("/", "")
+        };
 
-            return repoExtended;
-        }
+        return repoExtended;
+    }
 
-        public void CommitAndPushToRepo(string path, string workflowFilePath, string accessToken)
+    public void CommitAndPushToRepo(string path, string workflowFilePath, string accessToken)
+    {
+        using (var repo = new Repository(Repository.Discover(path)))
         {
-            using (var repo = new Repository(Repository.Discover(path)))
-            {
-                // Stage the file
-                repo.Index.Add(workflowFilePath);
-                repo.Index.Write();
+            // Stage the file
+            repo.Index.Add(workflowFilePath);
+            repo.Index.Write();
 
-                Configuration config = repo.Config;
-                Signature author = config.BuildSignature(DateTimeOffset.Now);
+            Configuration config = repo.Config;
+            Signature author = config.BuildSignature(DateTimeOffset.Now);
 
-                // Commit to the repository
-                Commit commit = repo.Commit("Adding GitHub Workflow file", author, author);
+            // Commit to the repository
+            Commit commit = repo.Commit("Adding GitHub Workflow file", author, author);
 
-  //              LibGit2Sharp.PushOptions options = new LibGit2Sharp.PushOptions();
+            //              LibGit2Sharp.PushOptions options = new LibGit2Sharp.PushOptions();
 
-  //              options.CredentialsProvider = new CredentialsHandler(
-  //(url, usernameFromUrl, types) => new UsernamePasswordCredentials()
-  //{
-  //    Username = "isaacrlevin",
-  //    Password = accessToken
-  //});
+            //              options.CredentialsProvider = new CredentialsHandler(
+            //(url, usernameFromUrl, types) => new UsernamePasswordCredentials()
+            //{
+            //    Username = "isaacrlevin",
+            //    Password = accessToken
+            //});
 
-  //              repo.Network.Push(repo.Branches[repo.Head.FriendlyName], options);
+            //              repo.Network.Push(repo.Branches[repo.Head.FriendlyName], options);
 
 
-            }
         }
     }
 }

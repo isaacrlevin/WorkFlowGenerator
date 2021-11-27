@@ -2,10 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace WorkFlowGenerator.Services
+namespace WorkFlowGenerator.Services;
+
+public interface IProjectDiscoveryService
 {
-    public interface IProjectDiscoveryService
-    {
-        string DiscoverProject(string path);
-    }
+    string DiscoverProject(string path);
 }

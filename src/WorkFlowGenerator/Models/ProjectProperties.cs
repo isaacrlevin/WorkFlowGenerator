@@ -2,99 +2,97 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace WorkFlowGenerator.Models
+namespace WorkFlowGenerator.Models;
+
+// NOTE: Generated code may require at least .NET Framework 4.5 or .NET Core/Standard 2.0.
+/// <remarks/>
+[System.SerializableAttribute()]
+[System.ComponentModel.DesignerCategoryAttribute("code")]
+[System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
+[System.Xml.Serialization.XmlRootAttribute(Namespace = "", IsNullable = false)]
+public partial class Project
 {
 
-    // NOTE: Generated code may require at least .NET Framework 4.5 or .NET Core/Standard 2.0.
+    private ProjectPropertyGroup propertyGroupField;
+
+    private string sdkField;
+
     /// <remarks/>
-    [System.SerializableAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-    [System.Xml.Serialization.XmlRootAttribute(Namespace = "", IsNullable = false)]
-    public partial class Project
+    public ProjectPropertyGroup PropertyGroup
     {
-
-        private ProjectPropertyGroup propertyGroupField;
-
-        private string sdkField;
-
-        /// <remarks/>
-        public ProjectPropertyGroup PropertyGroup
+        get
         {
-            get
-            {
-                return this.propertyGroupField;
-            }
-            set
-            {
-                this.propertyGroupField = value;
-            }
+            return this.propertyGroupField;
         }
-
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public string Sdk
+        set
         {
-            get
-            {
-                return this.sdkField;
-            }
-            set
-            {
-                this.sdkField = value;
-            }
+            this.propertyGroupField = value;
         }
     }
 
     /// <remarks/>
-    [System.SerializableAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-    public partial class ProjectPropertyGroup
+    [System.Xml.Serialization.XmlAttributeAttribute()]
+    public string Sdk
     {
-
-        private string targetFrameworkField;
-
-        private string targetFrameworksField;
-
-        private string azureFunctionsVersionField;
-
-        /// <remarks/>
-        public string TargetFramework
+        get
         {
-            get
-            {
-                return this.targetFrameworkField;
-            }
-            set
-            {
-                this.targetFrameworkField = value;
-            }
+            return this.sdkField;
         }
-
-        public string TargetFrameworks
+        set
         {
-            get
-            {
-                return this.targetFrameworksField;
-            }
-            set
-            {
-                this.targetFrameworksField = value;
-            }
+            this.sdkField = value;
         }
+    }
+}
 
-        /// <remarks/>
-        public string AzureFunctionsVersion
+/// <remarks/>
+[System.SerializableAttribute()]
+[System.ComponentModel.DesignerCategoryAttribute("code")]
+[System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
+public partial class ProjectPropertyGroup
+{
+
+    private string targetFrameworkField;
+
+    private string targetFrameworksField;
+
+    private string azureFunctionsVersionField;
+
+    /// <remarks/>
+    public string TargetFramework
+    {
+        get
         {
-            get
-            {
-                return this.azureFunctionsVersionField;
-            }
-            set
-            {
-                this.azureFunctionsVersionField = value;
-            }
+            return this.targetFrameworkField;
+        }
+        set
+        {
+            this.targetFrameworkField = value;
+        }
+    }
+
+    public string TargetFrameworks
+    {
+        get
+        {
+            return this.targetFrameworksField;
+        }
+        set
+        {
+            this.targetFrameworksField = value;
+        }
+    }
+
+    /// <remarks/>
+    public string AzureFunctionsVersion
+    {
+        get
+        {
+            return this.azureFunctionsVersionField;
+        }
+        set
+        {
+            this.azureFunctionsVersionField = value;
         }
     }
 }
