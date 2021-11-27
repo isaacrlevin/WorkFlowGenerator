@@ -1,6 +1,8 @@
 # WorkFlowGenerator
 
-A .NET global tool to generate workflows for GitHub Actions based on project configuration and user inputs.
+A .NET global tool to generate workflows for GitHub Actions based on project configuration and user inputs. The tool is published to Nuget as well
+
+https://www.nuget.org/packages/dotnet-workflow-generator/
 
 ## Getting Started
 
