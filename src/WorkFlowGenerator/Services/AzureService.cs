@@ -101,7 +101,6 @@ public class AzureService : IAzureService
 
     public async Task<IFunctionApp> GetFunctions()
     {
-
         if (_credentialAdapter == null)
         {
             _credentialAdapter = new AzureIdentityFluentCredentialAdapter(_credential, _subscription.Data.TenantId, AzureEnvironment.AzureGlobalCloud);
