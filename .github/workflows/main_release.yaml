@@ -65,8 +65,9 @@ jobs:
     - name: Get version
       id: set_proj_version
       shell: pwsh
+      working-directory: src
       run: |
-        [xml]$nuspec = Get-Content src\WorkflowGenerator\WorkflowGenerator.csproj
+        [xml]$nuspec = Get-Content WorkflowGenerator\WorkflowGenerator.csproj
         $version=$nuspec.project.propertygroup.versionprefix
         $relnotes=$nuspec.project.propertygroup.packagereleasenotes
         Write-Output "::set-output name=PKG_VERSION::$version"
