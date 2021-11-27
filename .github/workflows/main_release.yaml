@@ -76,7 +76,7 @@ jobs:
     needs: build
     environment:
       name: production
-      url: https://www.nuget.org/packages/WorkflowGenerator
+      url: https://www.nuget.org/packages/dotnet-workflow-generator/
     name: Sign and publish
     runs-on: ubuntu-latest
     steps:
