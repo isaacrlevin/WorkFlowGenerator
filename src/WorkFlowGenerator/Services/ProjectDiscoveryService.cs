@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.IO.Abstractions;
 using System.Linq;
+using Spectre.Console;
 using WorkFlowGenerator.Exceptions;
 
 namespace WorkFlowGenerator.Services;
@@ -29,8 +30,10 @@ public class ProjectDiscoveryService : IProjectDiscoveryService
             // We did not find any solutions, so try and find individual projects
             var projectFiles = _fileSystem.Directory.GetFiles(path, "*.csproj").Concat(_fileSystem.Directory.GetFiles(path, "*.fsproj")).ToArray();
             if (projectFiles.Length == 1)
+            {
+                AnsiConsole.WriteLine($"Project discovered: {projectFiles[0]}");
                 return _fileSystem.Path.GetFullPath(projectFiles[0]);
-
+            }
             if (projectFiles.Length > 1)
                 throw new CommandValidationException(string.Format(Resources.ValidationErrorMessages.DirectoryContainsMultipleProjects, path));
 
@@ -41,8 +44,10 @@ public class ProjectDiscoveryService : IProjectDiscoveryService
         if (
             (string.Compare(_fileSystem.Path.GetExtension(path), ".csproj", StringComparison.OrdinalIgnoreCase) == 0) ||
             (string.Compare(_fileSystem.Path.GetExtension(path), ".fsproj", StringComparison.OrdinalIgnoreCase) == 0))
+        {
+            AnsiConsole.WriteLine($"Project discovered: {_fileSystem.Path.GetFullPath(path)}");
             return _fileSystem.Path.GetFullPath(path);
-
+        }
         // At this point, we know the file passed in is not a valid project or solution
         throw new CommandValidationException(string.Format(Resources.ValidationErrorMessages.FileNotAValidSolutionOrProject, path));
     }

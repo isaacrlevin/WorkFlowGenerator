@@ -2,11 +2,24 @@
 
 	<PropertyGroup>
 		<OutputType>Exe</OutputType>
-		<TargetFrameworks>net6.0</TargetFrameworks>
+		<TargetFramework>net6.0</TargetFramework>
 		<PackAsTool>true</PackAsTool>
-		<ToolCommandName>workflow-generator</ToolCommandName>
-		<AssemblyName>workflow-generator</AssemblyName>
+		<ToolCommandName>dotnet-workflow-generator</ToolCommandName>
+		<AssemblyName>dotnet-workflow-generator</AssemblyName>
 		<PackageOutputPath>./nupkg</PackageOutputPath>
+    <Title>dotnet-workflow-generator</Title>
+    <Authors>Isaac Levin</Authors>
+    <Summary>A .NET global tool to generate workflows for GitHub Actions based on project configuration and user inputs</Summary>
+    <Copyright>Copyright (c) Isaac Levin</Copyright>
+    <Description>A .NET global tool to generate workflows for GitHub Actions based on project configuration and user inputs</Description>
+    <PackageId>dotnet-workflow-generator</PackageId>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/isaacrlevin/WorkFlowGenerator</PackageProjectUrl>
+    <PackageReleaseNotes>See https://github.com/isaacrlevin/WorkFlowGenerator/releases for release information</PackageReleaseNotes>
+    <PackageVersion>0.1.0</PackageVersion>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>dotnet github workflow actions generate</PackageTags>
+    <RepositoryUrl>https://github.com/isaacrlevin/WorkFlowGenerator.git</RepositoryUrl>
 	</PropertyGroup>
 
 	<ItemGroup>
