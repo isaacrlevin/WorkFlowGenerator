@@ -179,7 +179,7 @@ internal class Program
             }
         }
 
-        console.WriteLine($"GitHub Workflow Created at {WorkflowSettings.WorkflowFolderPath}");
+        AnsiConsole.Write($"GitHub Workflow Created at {WorkflowSettings.WorkflowFolderPath}");
         return 0;
 
     }
@@ -191,7 +191,8 @@ internal class Program
             Path = _fileSystem.Directory.GetCurrentDirectory();
 
         // Get all the projects
-        Console.Write("Discovering project...");
+
+        AnsiConsole.WriteLine("Discovering project..");
 
         var projectPath = _projectDiscoveryService.DiscoverProject(Path);
 
@@ -202,9 +203,9 @@ internal class Program
             projectProperties = (WorkFlowGenerator.Models.Project)ser.Deserialize(reader);
         }
 
-        if (!string.IsNullOrEmpty(projectProperties.PropertyGroup.TargetFramework))
+        if (!string.IsNullOrEmpty(projectProperties.PropertyGroup.TargetFrameworks))
         {
-            string[] frameworks = projectProperties.PropertyGroup.TargetFramework.Split(";");
+            string[] frameworks = projectProperties.PropertyGroup.TargetFrameworks.Split(";");
 
             if (frameworks.Length > 1)
             {
@@ -218,6 +219,14 @@ internal class Program
             {
                 throw new Exception();
             }
+        }
+        else if (!string.IsNullOrEmpty(projectProperties.PropertyGroup.TargetFramework))
+        {
+            WorkflowSettings.DOTNETVersion = projectProperties.PropertyGroup.TargetFramework.Replace("net", "") + ".x";
+        }
+        else
+        {
+            throw new Exception();
         }
 
         if (!string.IsNullOrEmpty(projectProperties.PropertyGroup.AzureFunctionsVersion))
@@ -249,6 +258,7 @@ internal class Program
             WorkflowSettings.WorkflowFolderPath = System.IO.Path.Combine(workingDir, ".github", "workflows");
             WorkflowSettings.WorkingDirectory = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(projectPath).Replace(workingDir, ""));
             WorkflowSettings.PackagePath = System.IO.Path.Combine(WorkflowSettings.WorkingDirectory, "publish");
+
             return 0;
         }
         else

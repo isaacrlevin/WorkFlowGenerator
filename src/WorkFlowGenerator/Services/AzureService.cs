@@ -7,6 +7,7 @@ using Azure.ResourceManager.Resources;
 using Microsoft.Azure.Management.AppService.Fluent;
 using Microsoft.Azure.Management.ResourceManager.Fluent;
 using Spectre.Console;
+using System.Collections.Generic;
 
 namespace WorkFlowGenerator.Services;
 
@@ -26,7 +27,13 @@ public class AzureService : IAzureService
 
     public Subscription GetSubscription()
     {
-        var subscriptions = _armClient.GetSubscriptions();
+        List<Subscription> subscriptions = null;
+        AnsiConsole.Status()
+        .Start("Gathering Subscriptions...", ctx =>
+        {
+            subscriptions = _armClient.GetSubscriptions().ToList();
+        });
+
         var pickedSub = AnsiConsole.Prompt(
             new SelectionPrompt<(string, string)>()
             .Title("What Azure subscription would you like to deploy to?")
@@ -41,7 +48,12 @@ public class AzureService : IAzureService
 
     public ResourceGroup GetResourceGroups()
     {
-        var resourceGroups = _subscription.GetResourceGroups();
+        List<ResourceGroup> resourceGroups = null;
+        AnsiConsole.Status().Start("Gathering Resource Groups...", ctx =>
+        {
+            resourceGroups = _subscription.GetResourceGroups().ToList();
+        });
+
 
 
         var pickedRg = AnsiConsole.Prompt(
@@ -60,14 +72,19 @@ public class AzureService : IAzureService
 
     public async Task<IWebApp> GetWebApps()
     {
+
         if (_credentialAdapter == null)
         {
             _credentialAdapter = new AzureIdentityFluentCredentialAdapter(_credential, _subscription.Data.TenantId, AzureEnvironment.AzureGlobalCloud);
         }
-        var websites = await Microsoft.Azure.Management.Fluent.Azure
-            .Authenticate(_credentialAdapter)
-            .WithSubscription(_subscription.Data.DisplayName)
-            .AppServices.WebApps.ListByResourceGroupAsync(_resourceGroup.Data.Name);
+        List<IWebApp> websites = null;
+        AnsiConsole.Status().Start("Gathering Web Apps...", ctx =>
+        {
+            websites = Microsoft.Azure.Management.Fluent.Azure
+                .Authenticate(_credentialAdapter)
+                .WithSubscription(_subscription.Data.DisplayName)
+                .AppServices.WebApps.ListByResourceGroupAsync(_resourceGroup.Data.Name).Result.ToList();
+        });
 
         var pickedwebsites = AnsiConsole.Prompt(
             new SelectionPrompt<string>()
@@ -88,10 +105,15 @@ public class AzureService : IAzureService
         {
             _credentialAdapter = new AzureIdentityFluentCredentialAdapter(_credential, _subscription.Data.TenantId, AzureEnvironment.AzureGlobalCloud);
         }
-        var functions = await Microsoft.Azure.Management.Fluent.Azure
-            .Authenticate(_credentialAdapter)
-            .WithSubscription(_subscription.Data.DisplayName)
-            .AppServices.FunctionApps.ListByResourceGroupAsync(_resourceGroup.Data.Name);
+
+        List<IFunctionApp> functions = null;
+        AnsiConsole.Status().Start("Gathering Functions...", ctx =>
+        {
+            functions = Microsoft.Azure.Management.Fluent.Azure
+              .Authenticate(_credentialAdapter)
+              .WithSubscription(_subscription.Data.DisplayName)
+              .AppServices.FunctionApps.ListByResourceGroupAsync(_resourceGroup.Data.Name).Result.ToList();
+        });
 
         var pickedFunctions = AnsiConsole.Prompt(
             new SelectionPrompt<string>()
