@@ -21,7 +21,7 @@ jobs:
     name: Build
     runs-on: ubuntu-latest
     outputs:
-      version: ${{ steps.set_proj_version.outputs.PKG_VERSION }}
+      version: ${{ steps.set_proj_version.outputs.VERSION }}
       relnotes: ${{ steps.set_proj_version.outputs.RELNOTES }}
     env:
       DOTNET_CLI_TELEMETRY_OPTOUT: 1
@@ -34,11 +34,20 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
 
     - name: Setup .NET Core SDK
       uses: actions/setup-dotnet@v1.8.2
       with:
         dotnet-version: 6.0.x
+
+    - name: Nerdbank.GitVersioning
+      uses: dotnet/nbgv@v0.4.0
+      with:
+        setCommonVars: true
+
+    - run: echo "BuildNumber - ${{ env.GitBuildVersionSimple }}"
 
     - name: Restore
       run: dotnet restore
@@ -53,7 +62,7 @@ jobs:
       working-directory: src
 
     - name: Pack
-      run: dotnet pack --configuration Release -o finalpackage --no-build
+      run: dotnet pack --configuration Release -o finalpackage --no-build /p:Version=${{ env.GitBuildVersionSimple }}
       working-directory: src
 
     - name: Publish artifact
@@ -65,14 +74,11 @@ jobs:
     - name: Get version
       id: set_proj_version
       shell: pwsh
-      working-directory: src
       run: |
-        [xml]$nuspec = Get-Content WorkflowGenerator\WorkflowGenerator.csproj
-        $version=$nuspec.project.propertygroup.versionprefix
+        [xml]$nuspec = Get-Content /home/runner/work/WorkFlowGenerator/WorkFlowGenerator/src/WorkFlowGenerator/WorkFlowGenerator.csproj
         $relnotes=$nuspec.project.propertygroup.packagereleasenotes
-        Write-Output "::set-output name=PKG_VERSION::$version"
+        Write-Output "::set-output name=VERSION::${{ env.GitBuildVersionSimple }} "
         Write-Output "::set-output name=RELNOTES::$relnotes"
-
   deploy:
     needs: build
     environment:
@@ -108,13 +114,9 @@ jobs:
         id: tag_release
         uses: softprops/action-gh-release@v0.1.13
         with:
-<<<<<<< HEAD
-          body: ${{ needs.build.outputs.relnotes }}
-=======
->>>>>>> 59153ca (Update main_release.yaml)
           tag_name: ${{ needs.build.outputs.version }}
           files: |
             **/*.nupkg
           body: |
-            ${{ steps.changelog.outputs.compareurl }}
-            ${{ steps.changelog.outputs.changelog }}
+            ${{ steps.changelog.outputs.compareurl }}
+            ${{ steps.changelog.outputs.changelog }}

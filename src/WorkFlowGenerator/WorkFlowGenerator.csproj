@@ -20,7 +20,6 @@
     <RepositoryType>git</RepositoryType>
     <PackageTags>dotnet github workflow actions generate</PackageTags>
     <RepositoryUrl>https://github.com/isaacrlevin/WorkFlowGenerator.git</RepositoryUrl>
-    <Version>0.1.0</Version>
     <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
 
