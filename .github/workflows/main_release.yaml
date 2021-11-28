@@ -15,10 +15,10 @@ on:
       - '**/*.md'
       - '**/*.gitignore'
       - '**/*.gitattributes'
-      
+
 jobs:
   build:
-    name: Build 
+    name: Build
     runs-on: ubuntu-latest
     outputs:
       version: ${{ steps.set_proj_version.outputs.PKG_VERSION }}
@@ -34,7 +34,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-      
+
     - name: Setup .NET Core SDK
       uses: actions/setup-dotnet@v1.8.2
       with:
@@ -90,9 +90,19 @@ jobs:
         uses: actions/setup-dotnet@v1.8.2
         with:
           dotnet-version: 6.0.x
-      
+
       - name: Push to NuGet
         run: dotnet nuget push **/*.nupkg -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json --skip-duplicate
+
+      - ​name​: ​Generate changelog
+        ​id​: ​changelog
+        ​uses​: ​jaywcjlove/changelog-generator@main
+ ​       ​with​:
+ ​         ​token​: ​${{ secrets.GITHUB_TOKEN }}
+ ​         filter​: ​'​'
+ ​       ​env​:
+ ​         ​commitMode​: ​true
+ ​         GITHUB_TOKEN​: ​${{ secrets.GITHUB_TOKEN }}
 
       - name: Tag and Release
         id: tag_release
