@@ -8,6 +8,7 @@ using Microsoft.Azure.Management.AppService.Fluent;
 using Microsoft.Azure.Management.ResourceManager.Fluent;
 using Spectre.Console;
 using System.Collections.Generic;
+using System.Net.Http;
 
 namespace WorkFlowGenerator.Services;
 
@@ -18,6 +19,7 @@ public class AzureService : IAzureService
     private AzureIdentityFluentCredentialAdapter _credentialAdapter;
     private Subscription _subscription;
     private ResourceGroup _resourceGroup;
+    private Azure.Core.AccessToken _accessToken;
 
     public AzureService()
     {
@@ -43,6 +45,8 @@ public class AzureService : IAzureService
         _subscription = subscriptions.Where(a => a.Data.SubscriptionGuid == pickedSub.Item1).FirstOrDefault();
 
         AnsiConsole.WriteLine($"The selected subscription is {_subscription.Data.SubscriptionGuid}");
+
+        _accessToken = _credential.GetTokenAsync(new Azure.Core.TokenRequestContext(new[] { "https://management.azure.com/.default" })).Result;
         return _subscription;
     }
 
@@ -53,8 +57,6 @@ public class AzureService : IAzureService
         {
             resourceGroups = _subscription.GetResourceGroups().ToList();
         });
-
-
 
         var pickedRg = AnsiConsole.Prompt(
             new SelectionPrompt<string>()
@@ -125,5 +127,21 @@ public class AzureService : IAzureService
         var function = functions.Where(a => a.Name == pickedFunctions).FirstOrDefault();
         AnsiConsole.WriteLine($"The selected Function is {function.Name}");
         return function;
+    }
+
+    public async Task<string> GetPublishProfile(string resource)
+    {
+        using var httpClient = new HttpClient
+        {
+            BaseAddress = new System.Uri("https://management.azure.com")
+        };
+
+        httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", _accessToken.Token);
+
+        using var response = httpClient.PostAsync($"subscriptions/{_subscription.Data.DisplayName}/resourceGroups/{_resourceGroup.Data.Name}/providers/Microsoft.Web/sites/{resource}/publishxml?api-version=2018-02-01", new StringContent("{}", System.Text.Encoding.UTF8, "application/json")).Result;
+
+        var content = await response.Content.ReadAsStringAsync();
+
+        return content;
     }
 }

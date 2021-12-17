@@ -16,4 +16,6 @@ public interface IAzureService
     public Task<IWebApp> GetWebApps();
 
     public Task<IFunctionApp> GetFunctions();
+
+    public Task<string> GetPublishProfile(string resource);
 }

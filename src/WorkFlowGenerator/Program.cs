@@ -103,6 +103,39 @@ internal class Program
         {
             PopulateDirectories();
             await GetAzureResources();
+
+            if (AnsiConsole.Confirm($"Do you want to create the GitHub Secret for your Azure Publishing Profile?"))
+            {
+                var token = await _gitHubService.GetGitHubToken();
+                var secrets = await _gitHubService.GetSecrets(WorkflowSettings.GitHubOwner, WorkflowSettings.GitHubRepo);
+                bool writeSecret = true;
+                foreach (var secret in secrets.Secrets)
+                {
+                    if (secret.Name == $"{WorkflowSettings.AzureResourceName.ToUpper()}_PUBLISH_PROFILE")
+                    {
+                        if (AnsiConsole.Confirm($"GitHub Secret {WorkflowSettings.AzureResourceName.ToUpper()}_PUBLISH_PROFILE exists, do you want to update it?"))
+                        {
+                            writeSecret = true;
+                        }
+                        else
+                        {
+                            writeSecret = false;
+                        }
+                        break;
+                    }
+                    else
+                    {
+                        writeSecret = true;
+                    }
+                }
+
+                if (writeSecret)
+                {
+                    // UPDATE SECRET  
+                    await _gitHubService.CreateSecret(WorkflowSettings.GitHubOwner, WorkflowSettings.GitHubRepo, $"{WorkflowSettings.AzureResourceName.ToUpper()}_PUBLISH_PROFILE", WorkflowSettings.AzurePublishProfile);
+                }
+            }
+
             await PopulateWorkflow(console);
             return 0;
         }
@@ -131,8 +164,6 @@ internal class Program
             {
                 WorkflowSettings.AppPlatform = AppPlatform.Windows;
             }
-
-            //var publishingprofile = webapp.GetPublishingProfile();
         }
         else
         {
@@ -146,9 +177,8 @@ internal class Program
             {
                 WorkflowSettings.AppPlatform = AppPlatform.Windows;
             }
-
-            //var publishingprofile = webapp.GetPublishingProfile();
         }
+        WorkflowSettings.AzurePublishProfile = await _azureService.GetPublishProfile(WorkflowSettings.AzureResourceName);
     }
 
     public async Task<int> PopulateWorkflow(IConsole console)
@@ -285,6 +315,7 @@ internal class Program
         template = template.Replace("{DOTNET_VERSION}", WorkflowSettings.DOTNETVersion);
         template = template.Replace("{PLATFORM}", WorkflowSettings.AppPlatform == AppPlatform.Linux ? "ubuntu" : "windows");
         template = template.Replace("{PROJECT_ROOT}", WorkflowSettings.WorkingDirectory);
+        template = template.Replace("{PUBLISH_PROFILE}", $"{ WorkflowSettings.AzureResourceName.ToUpper()}_PUBLISH_PROFILE");
 
         return template;
     }

@@ -49,6 +49,15 @@ jobs:
 
     - run: echo "BuildNumber - ${{ env.GitBuildVersionSimple }}"
 
+    - name: Update appsettings.json
+      run: |
+        # Update AppSettings.json. This must be done before build.
+        $appsettings= get-content "./src/WorkFlowGenerator/appsettings.json" -raw | ConvertFrom-Json
+        $appsettings.GitHubClientId = "${{ secrets.GITHUBCLIENTID }}"
+        $appsettings.GitHubClientSecret = "${{ secrets.GITHUBCLIENTSECRET }}"
+        $appsettings | ConvertTo-Json -depth 32| set-content './src/WorkFlowGenerator/appsettings.json'
+      shell: powershell
+
     - name: Restore
       run: dotnet restore
       working-directory: src

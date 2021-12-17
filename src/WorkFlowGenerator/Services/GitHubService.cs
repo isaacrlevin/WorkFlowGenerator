@@ -10,6 +10,7 @@ using System.Web;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Octokit;
 using WorkFlowGenerator.Models;
@@ -63,6 +64,10 @@ public class GitHubService : IGitHubService
     {
 
         var builder = WebApplication.CreateBuilder();
+        builder.Host.ConfigureLogging(logging =>
+        {
+            logging.ClearProviders();
+        });
         var app = builder.Build();
 
         var tcs = new TaskCompletionSource<string>(TaskCreationOptions.RunContinuationsAsynchronously);
@@ -114,7 +119,7 @@ public class GitHubService : IGitHubService
         var timeout = TimeSpan.FromMinutes(5);
 
         string redirectUri = string.Format($"https://127.0.0.1:{browserPort}");
-        string authUrl = $"https://github.com/login/oauth/authorize?client_id={_options.GitHubClientId}&scope=user%20repo&redirect_uri={HttpUtility.UrlEncode(redirectUri)}";
+        string authUrl = $"https://github.com/login/oauth/authorize?client_id={_options.GitHubClientId}&scope=gist%2Cread%3Aorg%2Crepo%2Cuser%2Cworkflow%2Cwrite%3Apublic_key&redirect_uri={HttpUtility.UrlEncode(redirectUri)}";
 
         OpenBrowser(authUrl);
 
@@ -187,16 +192,25 @@ _options.GitHubClientSecret
         var publicKey = Convert.FromBase64String(key.Key);
         var sealedPublicKeyBox = Sodium.SealedPublicKeyBox.Create(secretValueBytes, publicKey);
 
-        var response = await PutAsync($"/repos/{owner}/{repo}/actions/secrets/{secretName}", sealedPublicKeyBox);
+        var request = new CreateSecretRequest
+        {
+            key_id = key.Key_Id,
+            encrypted_value = sealedPublicKeyBox
+        };
+
+        var response = await PutAsync($"/repos/{owner}/{repo}/actions/secrets/{secretName}", request);
     }
 
     private async Task<TValue> GetAsync<TValue>(string endpoint)
     {
+
+        var foo = await client.GetAsync(endpoint);
+
         return await client.GetFromJsonAsync<TValue>(endpoint);
     }
 
-    private async Task<HttpResponseMessage> PutAsync(string endpoint, byte[] content)
+    private async Task<HttpResponseMessage> PutAsync(string endpoint, object content)
     {
-        return await client.PutAsync(endpoint, new ByteArrayContent(content));
+        return await client.PutAsync(endpoint, new StringContent(System.Text.Json.JsonSerializer.Serialize(content)));
     }
 }

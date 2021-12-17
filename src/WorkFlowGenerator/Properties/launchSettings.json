@@ -2,7 +2,7 @@
   "profiles": {
     "WorkFlowGenerator": {
       "commandName": "Project",
-      "workingDirectory": "F:\\dev\\Demos\\.NET-Conf-Demos\\AdvancedActions"
+      "workingDirectory": "D:\\dev\\Demos\\.NET-Conf-Demos\\AdvancedActions"
     }
   }
 }

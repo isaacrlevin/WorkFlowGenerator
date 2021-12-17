@@ -24,7 +24,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="appsettings.Development.json" />
     <None Remove="appsettings.json" />
     <None Remove="templates\function.txt" />
     <None Remove="templates\webapp.txt" />
@@ -54,7 +53,7 @@
       <PackagePath>\</PackagePath>
     </None>
     <PackageReference Include="Azure.Identity" Version="1.5.0" />
-    <PackageReference Include="Azure.ResourceManager" Version="1.0.0-beta.5" />
+    <PackageReference Include="Azure.ResourceManager" Version="1.0.0-beta.6" />
     <PackageReference Include="GitHubJwt" Version="0.0.5" />
     <PackageReference Include="IdentityModel.OidcClient" Version="5.0.0-preview.2" />
     <PackageReference Include="LibGit2Sharp" Version="0.26.2" />
@@ -67,6 +66,9 @@
     <PackageReference Include="Microsoft.Extensions.CommandLineUtils" Version="1.1.1" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Configuration" Version="6.0.0" />
     <PackageReference Include="Octokit" Version="0.50.0" />
     <PackageReference Include="Sodium.Core" Version="1.2.3" />
     <PackageReference Include="Spectre.Console" Version="0.42.0" />
