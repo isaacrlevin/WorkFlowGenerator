@@ -56,7 +56,7 @@ jobs:
         $appsettings.GitHubClientId = "${{ secrets.GITHUBCLIENTID }}"
         $appsettings.GitHubClientSecret = "${{ secrets.GITHUBCLIENTSECRET }}"
         $appsettings | ConvertTo-Json -depth 32| set-content './src/WorkFlowGenerator/appsettings.json'
-      shell: powershell
+      shell: pwsh
 
     - name: Restore
       run: dotnet restore
