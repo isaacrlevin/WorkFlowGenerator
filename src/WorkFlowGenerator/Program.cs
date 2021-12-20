@@ -2,7 +2,6 @@
 using System.IO;
 using System.IO.Abstractions;
 using System.Reflection;
-using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Serialization;
@@ -14,6 +13,7 @@ using Spectre.Console;
 using WorkFlowGenerator.Exceptions;
 using WorkFlowGenerator.Models;
 using WorkFlowGenerator.Services;
+using WorkFlowGenerator.Templates;
 
 namespace WorkFlowGenerator;
 
@@ -136,7 +136,7 @@ internal class Program
                 }
             }
 
-            await PopulateWorkflow(console);
+            PopulateWorkflow(console);
             return 0;
         }
         catch (CommandValidationException e)
@@ -181,37 +181,30 @@ internal class Program
         WorkflowSettings.AzurePublishProfile = await _azureService.GetPublishProfile(WorkflowSettings.AzureResourceName);
     }
 
-    public async Task<int> PopulateWorkflow(IConsole console)
+    public int PopulateWorkflow(IConsole console)
     {
         if (!Directory.Exists(WorkflowSettings.WorkflowFolderPath))
         {
             Directory.CreateDirectory(WorkflowSettings.WorkflowFolderPath);
         }
 
-        var assembly = Assembly.GetEntryAssembly();
-        Stream resourceStream = null;
+        string yaml;
         if (WorkflowSettings.AppType == AppType.Function)
         {
-            resourceStream = assembly.GetManifestResourceStream("WorkFlowGenerator.templates.function.txt");
+            yaml = AzureFunctionTemplate.Get();
         }
         else
         {
-            resourceStream = assembly.GetManifestResourceStream("WorkFlowGenerator.templates.webapp.txt");
+            yaml = AzureWebAppTemplate.Get();
         }
 
-        if (resourceStream != null)
+        if (string.IsNullOrEmpty(yaml) == false)
         {
-            using (var reader = new StreamReader(resourceStream, Encoding.UTF8))
-            {
-                var fileContents = await reader.ReadToEndAsync().ConfigureAwait(false);
-                var hydratedTemplate = HydrateTemplate(fileContents);
-                File.WriteAllText(System.IO.Path.Combine(WorkflowSettings.WorkflowFolderPath, "base.yml"), hydratedTemplate);
-            }
+            File.WriteAllText(System.IO.Path.Combine(WorkflowSettings.WorkflowFolderPath, "base.yml"), yaml);
         }
 
         AnsiConsole.Write($"GitHub Workflow Created at {WorkflowSettings.WorkflowFolderPath}");
         return 0;
-
     }
 
     private int PopulateDirectories()
