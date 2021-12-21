@@ -53,8 +53,7 @@ public static class AzureFunctionTemplate
         root.jobs.Add("build", buildJob);
 
         //Act
-        string yaml = GitHubActionsDotNet.Serialization.GitHubActionsSerialization.Serialize(root);
-        return yaml;
+        return GitHubActionsDotNet.Serialization.GitHubActionsSerialization.Serialize(root);
     }
 
 }
