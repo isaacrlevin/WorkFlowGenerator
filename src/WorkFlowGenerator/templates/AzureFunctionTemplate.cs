@@ -43,13 +43,11 @@ public static class AzureFunctionTemplate
             AzureStepHelper.AddAzureFunctionDeployStep("Deploy to Azure Function App","${{ env.AZURE_FUNCTIONAPP_NAME }}", "${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}", publishProfileName)
         };
         root.jobs = new();
-        Job buildJob = JobHelper.AddJob(
+        JobHelper jobHelper = new();
+        Job buildJob = jobHelper.AddJob(
             "Build job",
             platform + "-latest",
-            buildSteps,
-            null,
-            null,
-            0);
+            buildSteps);
         root.jobs.Add("build", buildJob);
 
         //Act

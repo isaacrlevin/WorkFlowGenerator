@@ -43,13 +43,11 @@ public static class AzureWebAppTemplate
             AzureStepHelper.AddAzureWebAppDeployStep("Deploy to Azure Web App","${{ env.AZURE_WEBAPP_NAME }}", "${{ env.AZURE_WEBAPP_PACKAGE_PATH }}", publishProfileName)
         };
         root.jobs = new();
-        Job buildJob = JobHelper.AddJob(
+        JobHelper jobHelper = new();
+        Job buildJob = jobHelper.AddJob(
             "Build job",
             platform + "-latest",
-            buildSteps,
-            null,
-            null,
-            0);
+            buildSteps);
         root.jobs.Add("build", buildJob);
 
         //Act
