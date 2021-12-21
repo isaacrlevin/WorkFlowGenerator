@@ -191,11 +191,25 @@ internal class Program
         string yaml;
         if (WorkflowSettings.AppType == AppType.Function)
         {
-            yaml = AzureFunctionTemplate.Get();
+            yaml = AzureFunctionTemplate.Get("Build and Deploy",
+                "main",
+                WorkflowSettings.AzureResourceName,
+                WorkflowSettings.PackagePath,
+                WorkflowSettings.DOTNETVersion,
+                WorkflowSettings.WorkingDirectory,
+                WorkflowSettings.AppPlatform == AppPlatform.Linux ? "ubuntu" : "windows",
+                "${{ secrets." + WorkflowSettings.AzureResourceName.ToUpper() + "_PUBLISH_PROFILE }}");            
         }
         else
         {
-            yaml = AzureWebAppTemplate.Get();
+            yaml = AzureWebAppTemplate.Get("Build and Deploy",
+                "main",
+                WorkflowSettings.AzureResourceName,
+                WorkflowSettings.PackagePath,
+                WorkflowSettings.DOTNETVersion,
+                WorkflowSettings.WorkingDirectory,
+                WorkflowSettings.AppPlatform == AppPlatform.Linux ? "ubuntu" : "windows",
+                "${{ secrets." + WorkflowSettings.AzureResourceName.ToUpper() + "_PUBLISH_PROFILE }}");
         }
 
         if (string.IsNullOrEmpty(yaml) == false)
@@ -299,17 +313,4 @@ internal class Program
         Console.SetCursorPosition(0, currentLineCursor);
     }
 
-    public string HydrateTemplate(string template)
-    {
-        template = template.Replace("{WORKFLOW_NAME}", "Build and Deploy");
-        template = template.Replace("{BRANCH_NAME}", "main");
-        template = template.Replace("{PACKAGE_PATH}", WorkflowSettings.PackagePath);
-        template = template.Replace("{AZURE_RESOURCE_NAME}", WorkflowSettings.AzureResourceName);
-        template = template.Replace("{DOTNET_VERSION}", WorkflowSettings.DOTNETVersion);
-        template = template.Replace("{PLATFORM}", WorkflowSettings.AppPlatform == AppPlatform.Linux ? "ubuntu" : "windows");
-        template = template.Replace("{PROJECT_ROOT}", WorkflowSettings.WorkingDirectory);
-        template = template.Replace("{PUBLISH_PROFILE}", $"{ WorkflowSettings.AzureResourceName.ToUpper()}_PUBLISH_PROFILE");
-
-        return template;
-    }
 }

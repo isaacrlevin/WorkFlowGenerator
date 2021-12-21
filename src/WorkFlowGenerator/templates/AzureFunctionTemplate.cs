@@ -5,15 +5,15 @@ namespace WorkFlowGenerator.Templates;
 
 public static class AzureFunctionTemplate
 {
-
     public static string Get(
-        string workflow_name = "Workflow generator for functions",
-        string branch_name = "main",
-        string azure_resource_name = "myazurefunction",
-        string package_path = "function/function.zip",
-        string dotnet_version = "3.1.x",
-        string project_root = "src/",
-        string platform = "windows")
+        string workflow_name,
+        string branch_name,
+        string azure_resource_name,
+        string package_path,
+        string dotnet_version,
+        string project_root,
+        string platform,
+        string publishProfileName)
     {
         //Arrange
         GitHubActionsRoot root = new();
@@ -40,7 +40,7 @@ public static class AzureFunctionTemplate
             DotNetStepHelper.AddDotNetBuildStep("Build","${{ env.WORKING_DIRECTORY }}","${{ env.CONFIGURATION }}","--no-restore"),
             DotNetStepHelper.AddDotNetTestStep("Test"),
             DotNetStepHelper.AddDotNetPublishStep("Publish","${{ env.WORKING_DIRECTORY }}", "${{ env.CONFIGURATION }}", "${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}", "--no-build"),
-            AzureStepHelper.AddAzureFunctionDeployStep("Deploy to Azure Function App","${{ env.AZURE_FUNCTIONAPP_NAME }}", "${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}")
+            AzureStepHelper.AddAzureFunctionDeployStep("Deploy to Azure Function App","${{ env.AZURE_FUNCTIONAPP_NAME }}", "${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}", publishProfileName)
         };
         root.jobs = new();
         Job buildJob = JobHelper.AddJob(
@@ -56,6 +56,5 @@ public static class AzureFunctionTemplate
         string yaml = GitHubActionsDotNet.Serialization.GitHubActionsSerialization.Serialize(root);
         return yaml;
     }
-
 
 }
