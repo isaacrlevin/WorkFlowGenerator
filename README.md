@@ -33,7 +33,7 @@ When you run the tool, it will parse the `.csproj` in the folder and prompt you 
 
 After you select your target, it will create a sample workflow based on the `TargetFramework` specified in the project file.
 
-![Demo](static/demo.gif)
+![Demo](https://github.com/isaacrlevin/WorkFlowGenerator/raw/main/static/demo.gif)
 
 ## Building from source
 
