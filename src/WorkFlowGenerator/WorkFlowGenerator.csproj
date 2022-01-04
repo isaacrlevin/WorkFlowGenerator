@@ -54,11 +54,11 @@
     </None>
     <PackageReference Include="Azure.Identity" Version="1.5.0" />
     <PackageReference Include="Azure.ResourceManager" Version="1.0.0-beta.6" />
-    <PackageReference Include="GitHubActionsDotNet" Version="0.7.0" />
+    <PackageReference Include="GitHubActionsDotNet" Version="0.8.2" />
     <PackageReference Include="GitHubJwt" Version="0.0.5" />
-    <PackageReference Include="IdentityModel.OidcClient" Version="5.0.0-preview.2" />
-    <PackageReference Include="LibGit2Sharp" Version="0.26.2" />
-    <PackageReference Include="McMaster.Extensions.CommandLineUtils" Version="3.1.0" />
+    <PackageReference Include="IdentityModel.OidcClient" Version="5.0.0" />
+    <PackageReference Include="LibGit2Sharp" Version="0.27.0-preview-0158" />
+    <PackageReference Include="McMaster.Extensions.CommandLineUtils" Version="4.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Hosting" Version="2.2.7" />
     <PackageReference Include="Microsoft.Azure.AppService" Version="0.2.2-alpha" />
     <PackageReference Include="Microsoft.Azure.Management.AppService.Fluent" Version="1.38.0" />
@@ -72,8 +72,8 @@
     <PackageReference Include="Microsoft.Extensions.Logging.Configuration" Version="6.0.0" />
     <PackageReference Include="Octokit" Version="0.50.0" />
     <PackageReference Include="Sodium.Core" Version="1.2.3" />
-    <PackageReference Include="Spectre.Console" Version="0.42.0" />
-    <PackageReference Include="System.IO.Abstractions" Version="13.2.47" />
+    <PackageReference Include="Spectre.Console" Version="0.43.1-preview.0.16" />
+    <PackageReference Include="System.IO.Abstractions" Version="16.0.1" />
     <PackageReference Include="System.Net.Http.Json" Version="6.0.0" />
   </ItemGroup>
 

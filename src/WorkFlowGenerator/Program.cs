@@ -104,7 +104,7 @@ internal class Program
             PopulateDirectories();
             await GetAzureResources();
 
-            if (AnsiConsole.Confirm($"Do you want to create the GitHub Secret for your Azure Publishing Profile?"))
+            if (AnsiConsole.Confirm($"Do you want to create the GitHub Secret for your Azure Publishing Profile (selecting no will leave value blank in workflow)?"))
             {
                 var token = await _gitHubService.GetGitHubToken();
                 var secrets = await _gitHubService.GetSecrets(WorkflowSettings.GitHubOwner, WorkflowSettings.GitHubRepo);
@@ -198,7 +198,7 @@ internal class Program
                 WorkflowSettings.DOTNETVersion,
                 WorkflowSettings.WorkingDirectory,
                 WorkflowSettings.AppPlatform == AppPlatform.Linux ? "ubuntu" : "windows",
-                "${{ secrets." + WorkflowSettings.AzureResourceName.ToUpper() + "_PUBLISH_PROFILE }}");            
+                "${{ secrets." + WorkflowSettings.AzureResourceName.ToUpper() + "_PUBLISH_PROFILE }}");
         }
         else
         {
