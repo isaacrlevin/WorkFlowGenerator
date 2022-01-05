@@ -54,6 +54,8 @@ public partial class ProjectPropertyGroup
 
     private string targetFrameworkField;
 
+    private string outputType;
+
     private string targetFrameworksField;
 
     private string azureFunctionsVersionField;
@@ -68,6 +70,18 @@ public partial class ProjectPropertyGroup
         set
         {
             this.targetFrameworkField = value;
+        }
+    }
+
+    public string OutputType
+    {
+        get
+        {
+            return this.outputType;
+        }
+        set
+        {
+            this.outputType = value;
         }
     }
 

@@ -144,4 +144,23 @@ public class AzureService : IAzureService
 
         return content;
     }
+
+    public List<string> GetAzureTargets(string projectType)
+    {
+        if (projectType == "web")
+        {
+            return new List<string>
+        {
+             AppTarget.WebApp,
+             AppTarget.AzureFunction
+        };
+        }
+        else
+        {
+            return new List<string>
+            {
+                AppTarget.WebJob
+            };
+        }
+    }
 }

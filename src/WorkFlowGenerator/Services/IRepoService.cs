@@ -8,6 +8,9 @@ namespace WorkFlowGenerator.Services;
 
 public interface IRepoService
 {
+    public bool IsGitRepo(string path);
+
+    public void CreateGitRepo(string path);
     public RepositoryExtended GetGitRepo(string path);
 
     public void CommitAndPushToRepo(string path, string workflowFilePath, string accessToken);

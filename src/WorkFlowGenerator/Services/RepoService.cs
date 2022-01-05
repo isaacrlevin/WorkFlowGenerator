@@ -7,18 +7,36 @@ namespace WorkFlowGenerator.Services;
 
 public class RepoService : IRepoService
 {
+    public bool IsGitRepo(string path)
+    {
+        if (!string.IsNullOrEmpty(Repository.Discover(path)))
+        {
+            return true;
+        }
+        return false;
+    }
+
+    public void CreateGitRepo(string path)
+    {
+        Repository.Init(path);
+    }
+
     public RepositoryExtended GetGitRepo(string path)
     {
         var repo = new Repository(Repository.Discover(path));
-        var url = new Uri(repo.Config.Get<string>("remote.origin.url").Value);
-        var repoExtended = new RepositoryExtended
+
+        RepositoryExtended repoExtended = new RepositoryExtended
         {
             Repository = repo,
-            RemoteOriginUrl = url,
-            GitHubOwner = url.Segments[url.Segments.Length - 2].Replace("/", ""),
-            GitHubRepo = url.Segments[url.Segments.Length - 1].Replace("/", "")
         };
 
+        if (repo.Config.Get<string>("remote.origin.url") != null)
+        {
+            var url = new Uri(repo.Config.Get<string>("remote.origin.url").Value);
+            repoExtended.RemoteOriginUrl = url;
+            repoExtended.GitHubOwner = url.Segments[url.Segments.Length - 2].Replace("/", "");
+            repoExtended.GitHubRepo = url.Segments[url.Segments.Length - 1].Replace("/", "");
+        }
         return repoExtended;
     }
 

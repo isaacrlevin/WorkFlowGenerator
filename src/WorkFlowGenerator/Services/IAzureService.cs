@@ -18,4 +18,6 @@ public interface IAzureService
     public Task<IFunctionApp> GetFunctions();
 
     public Task<string> GetPublishProfile(string resource);
+
+    public List<string> GetAzureTargets(string projectType);
 }
